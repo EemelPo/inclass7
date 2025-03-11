@@ -42,7 +42,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("${DOCKERHUB_REPO}:${DOCKER_IMAGE_TAG}")
+                    def customImage = docker.build("${DOCKERHUB_REPO}:${DOCKER_IMAGE_TAG}")
                 }
             }
         }
@@ -50,7 +50,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', DOCKERHUB_CREDENTIALS_ID) {
-                        docker.image("${DOCKERHUB_REPO}:${DOCKER_IMAGE_TAG}").push()
+                        customImage.push()
                     }
                 }
             }
